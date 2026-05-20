@@ -4,8 +4,6 @@ import SessionController from "../controller/SessionController";
 
 const router = Express.Router();
 
-//Rota dos usuários
-
 
 //Todos users
 router.get('/usuario', UserController.getAllUser);

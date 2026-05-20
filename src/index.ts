@@ -1,8 +1,11 @@
 import Express  from "express";
 import router from "./routers";
 import Con from './db/conectar'
+import dotenv from 'dotenv';
 
-const PORT = 4000;
+dotenv.config();
+
+const PORT = process.env.PORT;
 const app = Express();
 app.use(Express.json());
 

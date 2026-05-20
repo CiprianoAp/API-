@@ -8,17 +8,38 @@ import { Request, Response } from "express";
 class SessionController {
   async session(req: Request, res: Response): Promise<Response> {
     const schema = Yup.object().shape({
-      email: Yup.string().required(),
-      password: Yup.string().required().max(40),
+      email: Yup.string()
+      .required("Email campo obrigatório")
+      .email("Email inválido"),
+      password: Yup.string().required("Senha campo obrigatório")
+        .max(40, "senha deve ter no minimo 40 caracteres")
+        .min(6, "Senha deve conter no minimo 6 carateres")
+        .matches(/[A-Z]/, "Senha: deve conter letra maiúsculas de A-Z")
+        .matches(/[a-z]/, "Senha: deve deve conter letras minusculas de a-z")
+        .matches(/[0-9]/, "Senha: deve conter pelo menos um número")
+        .matches(
+          /[!@#$%^&*(),.?":{}|<>_\-\\[\]\/]/,
+          "Senha: deve conter pelo menos um caractere especial"
+        ),
     });
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: "Validação falhada" });
-    }
+    try {
 
+      await schema.validate(req.body, {
+        abortEarly: true,
+      });
+
+    } catch (error: any) {
+
+      return res.status(400).json({
+        erros: error.errors,
+      });
+
+    }
     const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
+
 
     if (!user) {
       return res.status(401).json({ error: "Usuário não existe" });

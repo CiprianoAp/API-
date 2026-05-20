@@ -1,9 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
 
-const MONG_OURL = "mongodb://127.0.0.1:27017";
+dotenv.config();
 
 
+
+const MONG_OURL: string | any = process.env.URI;
 
 class BD {
 
