@@ -1,9 +1,9 @@
 import  Express  from "express";
 import UserController from "../controller/UserController";
 import SessionController from "../controller/SessionController";
+import FilestorageController from "../controller/FilestorageController";
 
 const router = Express.Router();
-
 
 //Todos users
 router.get('/usuario', UserController.getAllUser);
@@ -15,6 +15,9 @@ router.post('/criar-usuario', UserController.createUser);
 router.put('/atualizar-usuario/:id', UserController.UpdateUser);
 //Eliminar User
 router.delete('/eliminar-usuario/:id', UserController.deleteUser);
+
+//Upload file 
+router.post('/upload', FilestorageController.fileCreat);
 
 //Login
 router.post('/login', SessionController.session);

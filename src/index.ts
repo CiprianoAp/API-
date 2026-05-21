@@ -1,6 +1,6 @@
 import Express  from "express";
 import router from "./routers";
-import Con from './db/conectar'
+import Con from './api/conectar'
 import dotenv from 'dotenv';
 
 dotenv.config();
