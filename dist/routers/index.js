@@ -18,8 +18,10 @@ router.post('/criar-usuario', UserController_1.default.createUser);
 router.put('/atualizar-usuario/:id', UserController_1.default.UpdateUser);
 //Eliminar User
 router.delete('/eliminar-usuario/:id', UserController_1.default.deleteUser);
-//Upload file 
+//Upload fille 
 router.post('/upload', FilestorageController_1.default.fileCreat);
+//Retornar todos fille
+router.get('/file', FilestorageController_1.default.RetornAll);
 //Login
 router.post('/login', SessionController_1.default.session);
 //Exportar rota

@@ -16,8 +16,11 @@ router.put('/atualizar-usuario/:id', UserController.UpdateUser);
 //Eliminar User
 router.delete('/eliminar-usuario/:id', UserController.deleteUser);
 
-//Upload file 
+//Upload fille 
 router.post('/upload', FilestorageController.fileCreat);
+
+//Retornar todos fille
+router.get('/file', FilestorageController.RetornAll);
 
 //Login
 router.post('/login', SessionController.session);

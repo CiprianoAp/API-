@@ -1,13 +1,15 @@
 import mongoose, { model } from 'mongoose';
-import { string } from 'yup';
 
 const ShemaFile = new mongoose.Schema({
-    file:{
-        nome: String,
-        caminho: string,
-        tamanho: string,
-        tipo: string
+    
+    nome: {
+        type: String,
+    },
+
+    caminho: {
+        type: String,
     }
-},{timestamps: true})
+
+}, { timestamps: true })
 
 export const FileStorageModel = mongoose.model("File", ShemaFile);
