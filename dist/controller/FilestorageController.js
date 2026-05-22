@@ -12,11 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const FileStorageModel_1 = require("../model/FileStorageModel");
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 class FilestorageController {
     constructor() {
+        //Carregar ficheiro
         this.fileCreat = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const storage = multer_1.default.diskStorage({
                 destination: function (req, file, cb) {
@@ -72,12 +76,75 @@ class FilestorageController {
                         message: "Nenhum arquivo enviado"
                     });
                 }
-                return res.status(200).json({
-                    message: "Upload realizado",
-                    file: req.file.filename,
-                    path: req.file.path
-                });
+                //Salvar dados no banco de dados
+                try {
+                    const file = new FileStorageModel_1.FileStorageModel({
+                        nome: req.file.filename,
+                        caminho: req.file.path,
+                    });
+                    file.save();
+                    return res.status(200).json({
+                        message: "Upload realizado",
+                        file: req.file.filename,
+                        path: req.file.path
+                    });
+                }
+                catch (erro) {
+                    return res.sendStatus(500);
+                }
             });
+        });
+        //Buscar todos ficheiros
+        this.RetornAll = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const file = yield FileStorageModel_1.FileStorageModel.find();
+                const fileResponse = file.map((file) => {
+                    // converter barras do windows
+                    const normalizedPath = file.caminho.replace(/\\/g, "/");
+                    // remover src/public/
+                    const relativePath = normalizedPath.replace("src/public/", "");
+                    return {
+                        id: file.id,
+                        nome: file.nome,
+                        caminho: file.caminho,
+                        url: `${process.env.URL}${relativePath}`
+                    };
+                });
+                return res.status(200).json(fileResponse);
+            }
+            catch (erro) {
+                return res.status(500).json({
+                    message: "Erro ao buscar arquivos", error: erro
+                });
+            }
+        });
+        //BUscar pelo id
+        this.docId = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const file = yield FileStorageModel_1.FileStorageModel.findById(req.params.id);
+                if (!file) {
+                    return res.status(404).json({
+                        message: "Ficheiro não encontrado"
+                    });
+                }
+                const normalized = ((_a = file.caminho) !== null && _a !== void 0 ? _a : "").replace(/\\/g, "/");
+                const relativePath = normalized.includes("src/public/")
+                    ? normalized.split("src/public/")[1]
+                    : normalized;
+                return res.json({
+                    id: file._id,
+                    nome: file.nome,
+                    caminho: file.caminho,
+                    url: `${process.env.URL}${file.caminho}`
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: "Erro ao buscar ficheiro",
+                    error: String(error)
+                });
+            }
         });
     }
 }

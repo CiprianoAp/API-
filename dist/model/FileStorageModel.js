@@ -5,13 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileStorageModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const yup_1 = require("yup");
 const ShemaFile = new mongoose_1.default.Schema({
-    file: {
-        nome: String,
-        caminho: yup_1.string,
-        tamanho: yup_1.string,
-        tipo: yup_1.string
+    nome: {
+        type: String,
+    },
+    caminho: {
+        type: String,
     }
 }, { timestamps: true });
 exports.FileStorageModel = mongoose_1.default.model("File", ShemaFile);

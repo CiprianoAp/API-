@@ -12,15 +12,6 @@ class SessionController {
       .required("Email campo obrigatório")
       .email("Email inválido"),
       password: Yup.string().required("Senha campo obrigatório")
-        .max(40, "senha deve ter no minimo 40 caracteres")
-        .min(6, "Senha deve conter no minimo 6 carateres")
-        .matches(/[A-Z]/, "Senha: deve conter letra maiúsculas de A-Z")
-        .matches(/[a-z]/, "Senha: deve deve conter letras minusculas de a-z")
-        .matches(/[0-9]/, "Senha: deve conter pelo menos um número")
-        .matches(
-          /[!@#$%^&*(),.?":{}|<>_\-\\[\]\/]/,
-          "Senha: deve conter pelo menos um caractere especial"
-        ),
     });
 
     try {
@@ -48,7 +39,7 @@ class SessionController {
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if (!checkPassword) {
-      return res.status(401).json({ error: "Senha incorreta" });
+      return res.status(401).json({ error: "Emain ou senha incorreta" });
     }
 
     return res.json({
