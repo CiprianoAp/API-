@@ -156,6 +156,40 @@ class FilestorageController {
     }
 
     //BUscar pelo id
+    docId = async (req: Request, res: Response) => {
+
+        try {
+
+            const file = await FileStorageModel.findById(req.params.id);
+
+            if (!file) {
+                return res.status(404).json({
+                    message: "Ficheiro não encontrado"
+                });
+            }
+
+            const normalized = (file.caminho ?? "").replace(/\\/g, "/");
+
+            const relativePath = normalized.includes("src/public/")
+                ? normalized.split("src/public/")[1]
+                : normalized;
+
+            return res.json({
+                id: file._id,
+                nome: file.nome,
+                caminho: file.caminho,
+
+                url: `${process.env.URL}${file.caminho}`
+            });
+
+        } catch (error) {
+
+            return res.status(500).json({
+                message: "Erro ao buscar ficheiro",
+                error: String(error)
+            });
+        }
+    }
 }
 
 export default new FilestorageController();

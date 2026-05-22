@@ -22,6 +22,9 @@ router.post('/upload', FilestorageController.fileCreat);
 //Retornar todos fille
 router.get('/file', FilestorageController.RetornAll);
 
+//Pegar file por id
+router.get('/file/:id', FilestorageController.docId);
+
 //Login
 router.post('/login', SessionController.session);
 

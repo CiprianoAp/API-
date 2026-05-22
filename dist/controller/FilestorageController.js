@@ -119,6 +119,33 @@ class FilestorageController {
             }
         });
         //BUscar pelo id
+        this.docId = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const file = yield FileStorageModel_1.FileStorageModel.findById(req.params.id);
+                if (!file) {
+                    return res.status(404).json({
+                        message: "Ficheiro não encontrado"
+                    });
+                }
+                const normalized = ((_a = file.caminho) !== null && _a !== void 0 ? _a : "").replace(/\\/g, "/");
+                const relativePath = normalized.includes("src/public/")
+                    ? normalized.split("src/public/")[1]
+                    : normalized;
+                return res.json({
+                    id: file._id,
+                    nome: file.nome,
+                    caminho: file.caminho,
+                    url: `${process.env.URL}${file.caminho}`
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: "Erro ao buscar ficheiro",
+                    error: String(error)
+                });
+            }
+        });
     }
 }
 exports.default = new FilestorageController();

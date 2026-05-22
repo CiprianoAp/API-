@@ -22,6 +22,8 @@ router.delete('/eliminar-usuario/:id', UserController_1.default.deleteUser);
 router.post('/upload', FilestorageController_1.default.fileCreat);
 //Retornar todos fille
 router.get('/file', FilestorageController_1.default.RetornAll);
+//Pegar file por id
+router.get('/file/:id', FilestorageController_1.default.docId);
 //Login
 router.post('/login', SessionController_1.default.session);
 //Exportar rota
