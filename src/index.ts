@@ -22,6 +22,6 @@ app.use(
 );
 
 
-app.listen(PORT, ()=>{
-    console.log(`App, está a rodar na porta ${PORT}`);
-})
+//app.listen(PORT, ()=>{
+//    console.log(`App, está a rodar na porta ${PORT}`);
+//})
